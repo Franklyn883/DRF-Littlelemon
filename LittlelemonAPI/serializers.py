@@ -48,6 +48,7 @@ class MenuItemSerializer(serializers.ModelSerializer):
     
     # adding a calculated field to our serializer
   def calculate_tax(self, product:MenuItem):
-      return product.price * Decimal(1.1)
+      pay_after_tax = product.price * Decimal(1.1)
+      return round(pay_after_tax,3)
   
  
