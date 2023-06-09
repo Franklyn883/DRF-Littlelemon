@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'LittlelemonAPI.apps.LittlelemonapiConfig',
     'debug_toolbar',
     'rest_framework',
+    'rest_framework.authtoken',#This create the auth model in the admin dashboard7
 ]
 
 MIDDLEWARE = [
@@ -135,5 +136,8 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework_xml.renderers.XMLRenderer',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES':(
+        'rest_framework.authentication.TokenAuthentication',
+    )
 }

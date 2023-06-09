@@ -14,19 +14,10 @@ from rest_framework.decorators import renderer_classes
 #for pagination
 from django.core.paginator import Paginator, EmptyPage
 
-# # Create your views here.
-# class MenuItemsView(generics.ListCreateAPIView):
-#   queryset = MenuItem.objects.all()
-#   serializer_class = MenuItemSerializer
-  
-  
-# # # To create a single item view
-# # class SingleMenuItemView(generics.RetrieveUpdateAPIView, generics.DestroyAPIView):
-#   queryset = MenuItem.objects.all()
-#   serializer_class = MenuItemSerializer
-  
-  
-#creating a view function that shows the menu items, here on my serialization lessons
+#for users authentications(using token-based validations)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
+
 
 #a view for getting all the records and displaying them as json
 @api_view(['POST', 'GET'])
@@ -78,28 +69,18 @@ def menu_items(request):
     return Response(serialized_items.data,status.HTTP_201_CREATED)
   
 
-# #creating a view for getting a single record and displaying the result as json
-
-# #Creating a -------------------HyperLinkedRelatedField---------------------
-# @api_view()
-# def category_detail(request,pk):
-#   category = get_object_or_404(Category,pk=pk)
-#   serialized_category = CategorySerializer(category)
-#   return Response(serialized_category.data)
+@api_view()
+@permission_classes([IsAuthenticated])
+def secret(request):
+  return Response({'Message':'Some secret messages'})
 
 
-# @api_view()
-# def menu_item(request, pk):
-#   #item = MenuItem.objects.get(pk=pk)
-#   #to handle the error
-#   item = get_object_or_404(MenuItem, pk=pk)
-#   #here notice we didn't ass the many=True argument because it's not a list.
-#   serialized_item = MenuItemSerializer(item)
-#   return Response(serialized_item.data)
-# display your api data in nicely formatted html
-# @api_view()
-# @renderer_classes([TemplateHTMLRenderer]) 
-# def menu(request):
-#   items = MenuItem.objects.select_related('category').all()
-#   serialized_items = MenuItemSerializer(items, many=True)
-#   return Response({'data':serialized_items.data}, template_name='menu-items.html')
+#Adding user roles
+@api_view()
+@permission_classes([IsAuthenticated])
+def manager_view(request):
+  if request.user.groups.filter(name="Manager").exists():
+    return Response({'Message':'Only managers can see this'})
+  else:
+    return Response({"Message": "You are not allowed to read this"} ,403)
+  

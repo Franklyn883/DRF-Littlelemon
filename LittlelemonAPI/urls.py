@@ -1,11 +1,13 @@
 from django.urls import path
 from . import views
 
+#this is to automatically generate the users authentication token
+from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
-    # path('menu-items', views.MenuItemsView.as_view()),
-    # path('menu-items/<int:pk>', views.SingleMenuItemView.as_view()),
     path('menu-items', views.menu_items),
-    # path('menu-items/<int:pk>', views.menu_item),
-    # path('category-detail/<int:pk>', views.category_detail, name='category-detail'),
-    ##path('menu', views.menu, name="menu")
+    path('secret/',views.secret),
+    #we can visit this endpoint in insomnia, we can only send post request
+    #we can generate the authtoken using the username and password as a form url encoded post message
+    path('api-token-auth/', obtain_auth_token),
+    path('manager-view', views.manager_view)
 ]
