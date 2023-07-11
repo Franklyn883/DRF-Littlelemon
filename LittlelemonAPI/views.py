@@ -72,7 +72,7 @@ def menu_items(request):
 @api_view()
 @permission_classes([IsAuthenticated])
 def secret(request):
-  return Response({'Message':'Some secret messages'})
+  return Response({'Message':'Some secret messages, only token-authenticated users can see this'})
 
 
 #Adding user roles
